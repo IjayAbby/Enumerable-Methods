@@ -1,4 +1,4 @@
-#rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 
 module Enumerable
   # 1. my_each method
@@ -151,4 +151,4 @@ range = Range.new(5, 50)
 
 p range.my_each_with_index(&block)
 
-#rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
