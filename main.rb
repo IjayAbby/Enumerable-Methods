@@ -1,3 +1,5 @@
+#rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:disable Style/CaseEquality
 module Enumerable
   # 1. my_each method
 
@@ -112,7 +114,6 @@ end
 
 # 9.my_inject
 
-
 def my_inject(*arg)
   array = to_a
   arg1 = arg[0]
@@ -138,7 +139,6 @@ def my_inject(*arg)
   result
 end
 
-
 # 10. multiply_els
 
 def multiply_els(array)
@@ -150,3 +150,7 @@ block = proc { |num| num < (0 + 9) / 2 }
 range = Range.new(5, 50)
 
 p range.my_each_with_index(&block)
+
+
+#rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:enable Style/CaseEquality
