@@ -113,34 +113,29 @@ end
 # 9.my_inject
 
 
-def my_inject(first_arg = nil, second_arg = nil)
-  arr = to_a
+def my_inject(*arg)
+  array = to_a
+  arg1 = arg[0]
+  arg2 = arg[1]
+
+  both_args = arg1 && arg2
+  only_one_arg = arg1 && !arg2
+  no_arg = !arg1
+
+  raise LocalJumpError if !block_given? && no_arg
+
+  result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
+
   if block_given?
-    if first_arg.nil?
-      acc = arr[0]
-      arr.my_each_with_index { |item, index| acc = yield(acc, item) if index.positive? }
-    else
-      return to_enum(:my_inject) unless (first_arg.is_a? Integer) || (first_arg.is_a? String)
+    array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
 
-      acc = first_arg
-      arr.my_each { |item| acc = yield(acc, item) }
-    end
-  elsif second_arg.nil?
-    unless first_arg.is_a? Symbol
-      raise LocalJumpError.new("no block given")
-    end
-
-    acc = arr[0]
-    arr.my_each_with_index { |item, index| acc = acc.send first_arg, item if index.positive? }
+    array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
   else
-    unless ((first_arg.is_a? Integer) || (first_arg.is_a? String)) && (second_arg.is_a? Symbol)
-      return to_enum(:my_inject)
-    end
+    array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
-    acc = first_arg
-    arr.my_each { |item| acc = acc.send second_arg, item }
+    array.my_each { |next_element| result = result.send(arg2, next_element) } if both_args
   end
-  acc
+  result
 end
 
 
