@@ -4,11 +4,11 @@ module Enumerable
   def my_each
     return to_enum(:my_each) unless block_given?
 
-     array = to_a
-     size.times {|index| yield array[index] }
-     self
+    array = to_a
+    size.times {|index| yield array[index] }
+    self
       
-    end
+  end
 
   # 2. my_each_with_index
   def my_each_with_index
@@ -56,12 +56,12 @@ def my_any?(args = nil)
     counter_true = 0
     my_each { |num| counter_true += 1 if yield num }
     counter_true.positive?
-    elsif args.nil?
-      my_any? { |num| num }
-    else
-      my_any? { |num| args === num }
-    end
+  elsif args.nil?
+    my_any? { |num| num }
+  else
+    my_any? { |num| args === num }
   end
+end
     
 end
 
@@ -74,11 +74,11 @@ def my_none?(args = nil)
     counter_true = 0
     my_each{ |num| counter_true += 1 if yield num}
     counter_true.zero?
-    elsif args.nil?
+  elsif args.nil?
       my_none? { |num| num }
-    else
+  else
       my_none? { |num| args === num }
-    end
+  end
 end
 
 
@@ -88,12 +88,12 @@ def my_count(args = nil)
   count = 0
   if block_given?
     to_a.my_each { |item| count += 1 if yield (item) }
-      elsif
-        !block_given? && args.nil?
-        count = to_a.length
-      else 
-        count = to_a.my_select { |item| item == args }.length
-      end
+  elsif
+    !block_given? && args.nil?
+    count = to_a.length
+  else 
+    count = to_a.my_select { |item| item == args }.length
+  end
       count
 end
 
@@ -147,7 +147,7 @@ def my_inject(first_arg = nil, second_arg = nil)
 
   accumul
 
-  end
+end
 
 
 
@@ -164,6 +164,3 @@ block = proc { |num| num < (0 + 9) / 2 }
 range = Range.new(5, 50)
 
 p range.my_each_with_index(&block)
-
-
- 
