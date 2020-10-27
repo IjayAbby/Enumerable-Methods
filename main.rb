@@ -12,6 +12,7 @@ module Enumerable
   # 2. my_each_with_index
   def my_each_with_index
     return to_enum unless block_given?
+
     arr = to_a
     pos = 0
     while pos < arr.length
@@ -104,25 +105,44 @@ def my_map(args = nil)
     map_array.length.times do |i|
       new_array << yield(map_arr[i])
     end
-  else return to_enum 
+  else return to_enum
   end
   new_array
 end
 
 # 9.my_inject
 
-def my_inject(initial = nil, sym = nil)
-  if (!initial.nil? && sym.nil?) && (initial.is_a?(Symbol) || initial.is_a?(String))
-    sym = initial
-    initial = nil
-  end
-  if !block_given? && !sym.nil?
-    to_a.my_each { |item| initial = initial.nil? ? item : initial.send(sym, item) }
+
+def my_inject(first_arg = nil, second_arg = nil)
+  arr = to_a
+  if block_given?
+    if first_arg.nil?
+      acc = arr[0]
+      arr.my_each_with_index { |item, index| acc = yield(acc, item) if index.positive? }
+    else
+      return to_enum(:my_inject) unless (first_arg.is_a? Integer) || (first_arg.is_a? String)
+
+      acc = first_arg
+      arr.my_each { |item| acc = yield(acc, item) }
+    end
+  elsif second_arg.nil?
+    unless first_arg.is_a? Symbol
+      raise LocalJumpError.new("no block given")
+    end
+
+    acc = arr[0]
+    arr.my_each_with_index { |item, index| acc = acc.send first_arg, item if index.positive? }
   else
-    to_a.my_each { |item| initial = initial.nil? ? item : yield(initial, item) }
+    unless ((first_arg.is_a? Integer) || (first_arg.is_a? String)) && (second_arg.is_a? Symbol)
+      return to_enum(:my_inject)
+    end
+
+    acc = first_arg
+    arr.my_each { |item| acc = acc.send second_arg, item }
   end
-  initial
+  acc
 end
+
 
 # 10. multiply_els
 
