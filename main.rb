@@ -1,13 +1,12 @@
 module Enumerable
-    # 1. my_each method
+  # 1. my_each method
 
   def my_each
     return to_enum(:my_each) unless block_given?
 
     array = to_a
-    size.times {|index| yield array[index] }
+    size.times { |index| yield array[index] }
     self
-      
   end
 
   # 2. my_each_with_index
@@ -22,8 +21,6 @@ module Enumerable
     self
   end
 
-
-
   # 3.my_select
 
   def my_select
@@ -34,52 +31,48 @@ module Enumerable
     new_arr
   end
 
-# 4.my_all?
+  # 4.my_all?
 
-def my_all?(args = nil)
-  if block_given?
-    counter_false = 0
-    my_each { |num| counter_false += 1 unless yield num }
-    counter_false.zero?
-  elsif  args.nil
-    my_all? { |num| num }
-  else
-    my_all?{ |num| args === num }
+  def my_all?(args = nil)
+    if block_given?
+      counter_false = 0
+      my_each { |num| counter_false += 1 unless yield num }
+      counter_false.zero?
+    elsif args.nil
+      my_all? { |num| num }
+    else
+      my_all? { |num| args === num }
+    end
+  end
+
+  # 5.my_any?
+
+  def my_any?(args = nil)
+    if block_given?
+      counter_true = 0
+      my_each { |num| counter_true += 1 if yield num }
+      counter_true.positive?
+    elsif args.nil?
+      my_any? { |num| num }
+    else
+      my_any? { |num| args === num }
+    end
   end
 end
-
-# 5.my_any?
-
-def my_any?(args = nil)
-  if block_given?
-    counter_true = 0
-    my_each { |num| counter_true += 1 if yield num }
-    counter_true.positive?
-  elsif args.nil?
-    my_any? { |num| num }
-  else
-    my_any? { |num| args === num }
-  end
-end
-    
-end
-
-
 
 # 6.my_none?
 
 def my_none?(args = nil)
   if block_given?
     counter_true = 0
-    my_each{ |num| counter_true += 1 if yield num}
+    my_each { |num| counter_true += 1 if yield num }
     counter_true.zero?
   elsif args.nil?
-      my_none? { |num| num }
+    my_none? { |num| num }
   else
-      my_none? { |num| args === num }
+    my_none? { |num| args === num }
   end
 end
-
 
 #7.my_count
 
@@ -87,15 +80,13 @@ def my_count(args = nil)
   count = 0
   if block_given?
     to_a.my_each { |item| count += 1 if yield (item) }
-  elsif
-    !block_given? && args.nil?
+  elsif !block_given? && args.nil?
     count = to_a.length
-  else 
+  else
     count = to_a.my_select { |item| item == args }.length
   end
-      count
+  count
 end
-
 
 # 8.my_maps
 
@@ -112,8 +103,7 @@ def my_map(args = nil)
     map_array.length.times do |i|
       new_array << yield(map_arr[i])
     end
-  else return to_enum
-  end
+  else return to_enum   end
   new_array
 end
 
@@ -143,18 +133,13 @@ def my_inject(first_arg = nil, second_arg = nil)
   rest.my_each { |el| accumul = accumul.send(first_arg, el) } if first_arg.is_a?(Symbol)
 
   accumul
-
 end
-
-
 
 # 10. multiply_els
 
 def multiply_els(array)
   array.my_inject(:*)
 end
-
-
 
 block = proc { |num| num < (0 + 9) / 2 }
 
