@@ -18,6 +18,7 @@ module Enumerable
       yield(arr[pos], pos)
       pos += 1
     end
+
     self
   end
 
@@ -41,7 +42,7 @@ module Enumerable
     elsif args.nil
       my_all? { |num| num }
     else
-      my_all? { |num| args === num }
+      my_all? { |num| args == num }
     end
   end
 
@@ -55,7 +56,7 @@ module Enumerable
     elsif args.nil?
       my_any? { |num| num }
     else
-      my_any? { |num| args === num }
+      my_any? { |num| args == num }
     end
   end
 end
@@ -70,16 +71,16 @@ def my_none?(args = nil)
   elsif args.nil?
     my_none? { |num| num }
   else
-    my_none? { |num| args === num }
+    my_none? { |num| args == num }
   end
 end
 
-#7.my_count
+# 7.my_count
 
 def my_count(args = nil)
   count = 0
   if block_given?
-    to_a.my_each { |item| count += 1 if yield (item) }
+    to_a.my_each { |item| count += 1 if yield item }
   elsif !block_given? && args.nil?
     count = to_a.length
   else
@@ -103,36 +104,24 @@ def my_map(args = nil)
     map_array.length.times do |i|
       new_array << yield(map_arr[i])
     end
-  else return to_enum   end
+  else return to_enum 
+  end
   new_array
 end
 
 # 9.my_inject
 
-def my_inject(first_arg = nil, second_arg = nil)
-  accumul = to_a[0]
-  rest = to_a[1..-1]
-  code = proc { |el| accumul = yield(accumul, el) }
-  raise LocalJumpError if !block_given? && first_arg.nil? && second_arg.nil?
-
-  if block_given?
-    unless first_arg
-      rest.my_each(&code)
-      return accumul
-    end
-    accumul = first_arg
-    to_a.my_each(&code)
-    return accumul
+def my_inject(initial = nil, sym = nil)
+  if (!initial.nil? && sym.nil?) && (initial.is_a?(Symbol) || initial.is_a?(String))
+    sym = initial
+    initial = nil
   end
-
-  if first_arg && second_arg
-    accumul = first_arg
-    my_each { |el| accumul = accumul.send(second_arg, el) }
-    return accumul
+  if !block_given? && !sym.nil?
+    to_a.my_each { |item| initial = initial.nil? ? item : initial.send(sym, item) }
+  else
+    to_a.my_each { |item| initial = initial.nil? ? item : yield(initial, item) }
   end
-  rest.my_each { |el| accumul = accumul.send(first_arg, el) } if first_arg.is_a?(Symbol)
-
-  accumul
+  initial
 end
 
 # 10. multiply_els
