@@ -13,7 +13,6 @@ module Enumerable
   # 2. my_each_with_index
   def my_each_with_index
     return to_enum unless block_given?
-
     arr = to_a
     pos = 0
     while pos < arr.length
@@ -117,8 +116,6 @@ def my_map(args = nil)
   end
   new_array
 end
-
-
 
 # 9.my_inject
 
