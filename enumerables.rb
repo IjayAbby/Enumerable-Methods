@@ -1,5 +1,6 @@
 # rubocop:disable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 # rubocop:disable Style/CaseEquality
+# rubocop:disable Metrics/ModuleLength
 
 module Enumerable
   # 1. my_each method
@@ -68,13 +69,13 @@ module Enumerable
 
   def my_none?(args = nil)
     if block_given?
-        counter_true = 0
-        my_each { |num| counter_true += 1 if yield num }
-        counter_true.zero?
+      counter_true = 0
+      my_each { |num| counter_true += 1 if yield num }
+      counter_true.zero?
     elsif args.nil?
-        my_none? { |num| num }
+      my_none? { |num| num }
     else
-        my_none? { |num| args === num }
+      my_none? { |num| args === num }
     end
   end
 
@@ -138,10 +139,9 @@ module Enumerable
     end
     result
   end
-
 end
 
-  # 10. multiply_els
+  # 10.multiply_els
 
 def multiply_els(array)
   array.my_inject(:*)
@@ -154,7 +154,5 @@ range = Range.new(5, 50)
 p range.my_each_with_index(&block)
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
-# rubocop:disable Style/CaseEquality
-
-
-
+# rubocop:enable Style/CaseEquality
+# rubocop:enable Metrics/ModuleLength
