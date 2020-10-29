@@ -42,12 +42,13 @@ module Enumerable
       counter_false = 0
       my_each { |num| counter_false += 1 unless yield num }
       counter_false.zero?
-    elsif args.nil
+    elsif args.nil?
       my_all? { |num| num }
     else
-      my_all? { |num| args == num }
+      my_all? { |num| args === num }
     end
   end
+
 
   # 5.my_any?
 
@@ -59,84 +60,90 @@ module Enumerable
     elsif args.nil?
       my_any? { |num| num }
     else
-      my_any? { |num| args == num }
+      my_any? { |num| args === num }
     end
   end
-end
+
+
+
+
 
 # 6.my_none?
 
-def my_none?(args = nil)
-  if block_given?
-    counter_true = 0
-    my_each { |num| counter_true += 1 if yield num }
-    counter_true.zero?
-  elsif args.nil?
-    my_none? { |num| num }
-  else
-    my_none? { |num| args == num }
+  def my_none?(args = nil)
+    if block_given?
+      counter_true = 0
+      my_each { |num| counter_true += 1 if yield num }
+      counter_true.zero?
+    elsif args.nil?
+      my_none? { |num| num }
+    else
+      my_none? { |num| args === num }
+    end
   end
-end
+
 
 # 7.my_count
 
-def my_count(args = nil)
-  count = 0
-  if block_given?
-    to_a.my_each { |item| count += 1 if yield item }
-  elsif !block_given? && args.nil?
-    count = to_a.length
-  else
-    count = to_a.my_select { |item| item == args }.length
+  def my_count(args = nil)
+    count = 0
+    if block_given?
+      to_a.my_each { |item| count += 1 if yield item }
+    elsif !block_given? && args.nil?
+      count = to_a.length
+    else
+      count = to_a.my_select { |item| item == args }.length
+    end
+    count
   end
-  count
-end
 
 # 8.my_maps
 
-def my_map(args = nil)
-  return to_enum(:my_map) if args.nil? && !block_given?
+  def my_map(args = nil)
+    return to_enum(:my_map) if args.nil? && !block_given?
 
-  map_array = to_a
-  new_array = []
-  if !args.nil?
-    map_array.length.times do |i|
-      new_array << args.call(map_array[i])
+    map_array = to_a
+    new_array = []
+    if !args.nil?
+      map_array.length.times do |i|
+        new_array << args.call(map_array[i])
+      end
+    elsif block_given?
+      map_array.length.times do |i|
+        new_array << yield(map_arr[i])
+      end
+    else return to_enum
     end
-  elsif block_given?
-    map_array.length.times do |i|
-      new_array << yield(map_arr[i])
-    end
-  else return to_enum
+    new_array
   end
-  new_array
-end
 
 # 9.my_inject
 
-def my_inject(*arg)
-  array = to_a
-  arg1 = arg[0]
-  arg2 = arg[1]
+  def my_inject(*arg)
+    array = to_a
+    arg1 = arg[0]
+    arg2 = arg[1]
 
-  both_args = arg1 && arg2
-  only_one_arg = arg1 && !arg2
-  no_arg = !arg1
+    both_args = arg1 && arg2
+    only_one_arg = arg1 && !arg2
+    no_arg = !arg1
 
-  raise LocalJumpError if !block_given? && no_arg
+    raise LocalJumpError if !block_given? && no_arg
 
-  result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
+    result = both_args || (only_one_arg && block_given?) ? arg1 : array.first
 
-  if block_given?
-    array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
+    if block_given?
+      array.drop(1).my_each { |next_element| result = yield(result, next_element) } if no_arg
 
-    array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
-  else
-    array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
+      array.my_each { |next_element| result = yield(result, next_element) } if only_one_arg
+    else
+      array.drop(1).my_each { |next_element| result = result.send(arg1, next_element) } if only_one_arg
 
-    array.my_each { |next_element| result = result.send(arg2, next_element) } if both_args
+      array.my_each { |next_element| result = result.send(arg2, next_element) } if both_args
+    end
+    result
   end
-  result
+
 end
 
 # 10. multiply_els
@@ -152,3 +159,4 @@ range = Range.new(5, 50)
 p range.my_each_with_index(&block)
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+
