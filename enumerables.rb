@@ -141,7 +141,7 @@ module Enumerable
   end
 end
 
-  # 10.multiply_els
+  #10.multiply_els
 
 def multiply_els(array)
   array.my_inject(:*)
