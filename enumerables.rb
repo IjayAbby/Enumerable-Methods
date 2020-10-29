@@ -67,15 +67,15 @@ module Enumerable
   # 6.my_none?
 
   def my_none?(args = nil)
-  if block_given?
-      counter_true = 0
-      my_each { |num| counter_true += 1 if yield num }
-      counter_true.zero?
-  elsif args.nil?
-      my_none? { |num| num }
-  else
-      my_none? { |num| args === num }
-  end
+    if block_given?
+        counter_true = 0
+        my_each { |num| counter_true += 1 if yield num }
+        counter_true.zero?
+    elsif args.nil?
+        my_none? { |num| num }
+    else
+        my_none? { |num| args === num }
+    end
   end
 
   # 7.my_count
@@ -105,7 +105,7 @@ module Enumerable
       end
     elsif block_given?
       map_array.length.times do |i|
-        new_array << yield(map_arr[i])
+        new_array << yield(map_array[i])
       end
     else return to_enum
     end
@@ -155,4 +155,6 @@ p range.my_each_with_index(&block)
 
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 # rubocop:disable Style/CaseEquality
+
+
 
