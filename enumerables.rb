@@ -141,8 +141,8 @@ module Enumerable
   end
   # 10.multiply_els
 
-  def multiply_els(array)
-    array.my_inject(:*)
+  def multiply_els(arr)
+    arr.my_inject(1, '*')
   end
 
   block = proc { |num| num < (0 + 9) / 2 }
