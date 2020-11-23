@@ -140,7 +140,7 @@ module Enumerable
     result
   end
   # 10.multiply_els
-  
+
   def multiply_els(array)
     array.my_inject(:*)
   end
@@ -150,9 +150,7 @@ module Enumerable
   range = Range.new(5, 50)
 
   p range.my_each_with_index(&block)
-
 end
-
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 # rubocop:enable Style/CaseEquality
 # rubocop:enable Metrics/ModuleLength
