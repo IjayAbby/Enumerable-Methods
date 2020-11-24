@@ -8,6 +8,10 @@ RSpec.describe Enumerable do
   let(:my_range) { (1..10) }
 
   context '#my_each' do
+    it 'when no block given, my_each method should return an enumerator' do
+      expect(my_array.my_each).to be_an(Enumerator)
+    end
+
     it 'return an number in its original form' do
       expect(num_array.my_each { |elem| }).to eql(num_array.each { |elem| })
     end
@@ -18,6 +22,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_each_with_index' do
+    it 'when no block given, my_each_with_index method should return an enumerator' do
+      expect(my_array.my_each_with_index).to be_an(Enumerator)
+    end
+
     it 'returns index of an item' do
       expect(num_array.my_each_with_index { |index| }).to eql(num_array.each { |index| })
     end
@@ -32,6 +40,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_select' do
+    it 'when no block given, my_select method should return an enumerator' do
+      expect(my_array.my_select).to be_an(Enumerator)
+    end
+
     it 'it should return "Mike"' do
       expect(my_array.my_select { |elem| elem == 'Mike' }).to eql(my_array.select { |elem| elem == 'Mike' })
     end
@@ -42,6 +54,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_all?' do
+    it 'should return enumerator object if block is not given' do
+      expect(my_array.my_all?.instance_of?(Enumerator)).to be(false)
+    end
+
     it 'return true if every element is 3' do
       expect([3, 3, 3].my_all? { |num| num == 3 }).to eql(true)
     end
@@ -56,6 +72,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_any?' do
+    it 'should return enumerator object if block is not given' do
+      expect(my_array.my_any?.instance_of?(Enumerator)).to be(false)
+    end
+
     it 'return true if one of the element is 3' do
       expect(num_array.my_any? { |num| num == 3 }).to eql(true)
     end
@@ -66,6 +86,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_none?' do
+    it 'should return enumerator object if block is not given' do
+      expect(my_array.my_none?.instance_of?(Enumerator)).to be(false)
+    end
+
     it 'return element if none of the element fits' do
       expect(my_array.my_none? { |elem| elem == 'Paris' }).to eql(true)
     end
@@ -88,6 +112,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_count' do
+    it 'should return enumerator object if block is not given' do
+      expect(my_array.my_count.instance_of?(Enumerator)).to be(false)
+    end
+
     it 'should return the number of elements in this case 4' do
       expect(num_array.my_count).to eql(4)
     end
@@ -106,6 +134,10 @@ RSpec.describe Enumerable do
   end
 
   context '#my_map' do
+    it 'should return enumerator object if block is not given' do
+      expect(my_array.my_map.instance_of?(Enumerator)).to be(true)
+    end
+
     it 'return a new array of mulyiply by 3' do
       expect(num_array.map { |elem| 3 * elem }).to eql(num_array.map { |elem| 3 * elem })
     end
