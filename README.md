@@ -37,6 +37,14 @@ The Enumerable module that gets mixed into the Array and Hash classes (among oth
 - Ruby
 - VS Code
 
+## Testing With Rspec.
+
+- Boot up your terminal and punch in ``gem install rspec`` to install RSpec. Once that’s done, you can verify your version of RSpec with ``rspec --version``, which will output the current version of each of the packaged gems. Take a minute also to hit ``rspec --help`` and look through the various options available.
+
+- Finally, cd into a project directory that you wish to configure for use with RSpec and type ``rspec --init`` to initialize RSpec within the project. This will generate two files, ``.rspec`` and ``spec/spec_helper.rb``
+
+- To check whether your test are passing or failing, go to your terminal and type ``rspec``.
+
 ## Author Details
 
 👤 **Ijay Abby**

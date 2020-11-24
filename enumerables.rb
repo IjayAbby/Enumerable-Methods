@@ -147,11 +147,6 @@ def multiply_els(array)
   array.my_inject(:*)
 end
 
-block = proc { |num| num < (0 + 9) / 2 }
-
-range = Range.new(5, 50)
-
-p range.my_each_with_index(&block)
 # rubocop:enable Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 # rubocop:enable Style/CaseEquality
 # rubocop:enable Metrics/ModuleLength
